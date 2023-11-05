@@ -8,13 +8,13 @@ export default function App() {
     <SafeAreaView style={styles.droidSafeArea}>
       <NavigationContainer>
         <PaperProvider>
-          <BottomTabs>
-          </BottomTabs>
+          <BottomTabs/>
         </PaperProvider>
       </NavigationContainer>
     </SafeAreaView>
   );
 }
+
 
 const styles = StyleSheet.create({
   droidSafeArea: {

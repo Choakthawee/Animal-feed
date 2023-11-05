@@ -15,6 +15,7 @@ function Feature_screen() {
 
 export default Feature_screen;
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
