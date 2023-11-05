@@ -5,7 +5,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Home_screen from "../../screens/Home/home";
 import Status_screen from "../../screens/Status/status";
 import Feature_screen from "../../screens/Feature/feature";
-
+import FoodHistory from '../../screens/Feature/food_history';
 const Tab = createMaterialBottomTabNavigator();
 
 export const BottomTabs = () => {
@@ -36,6 +36,13 @@ export const BottomTabs = () => {
       <Tab.Screen
         name="Feature"
         component={Feature_screen}
+        options={{
+          tabBarIcon: 'feature-search',
+        }}
+      />
+      <Tab.Screen
+        name="FoodHistory"
+        component={FoodHistory}
         options={{
           tabBarIcon: 'feature-search',
         }}

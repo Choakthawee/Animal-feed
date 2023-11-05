@@ -1,5 +1,5 @@
 import { SafeAreaView, StyleSheet } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer  } from "@react-navigation/native";
 import { Provider as PaperProvider } from 'react-native-paper';
 import { BottomTabs } from './src/navigator/tabbar/papernavber';
 export default function App() {
