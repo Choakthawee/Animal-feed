@@ -1,13 +1,14 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Platform, ScrollView } from "react-native";
+import { Button, View, Text, StyleSheet, TouchableOpacity, Platform, ScrollView } from "react-native";
 
-function Feature_screen() {
+function Feature_screen({ navigation }) {
   return (
     <ScrollView style={styles.container}>
       <View>
         <TouchableOpacity style={[styles.item, styles.shadowPlatform]}>
           <Text style={[styles.shadowText, { fontSize: 25, color: 'white' }]}>ประวัติการให้อาหาร</Text>
         </TouchableOpacity>
+        <Button title="Go to Details" onPress={() => navigation.navigate('Details')} />
       </View>
     </ScrollView>
   );
