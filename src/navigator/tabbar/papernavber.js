@@ -1,5 +1,6 @@
 import React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Home_screen from "../../screens/Home/home";
 import Status_screen from "../../screens/Status/status";
@@ -8,11 +9,15 @@ import Feature_screen from "../../screens/Feature/feature";
 const Tab = createMaterialBottomTabNavigator();
 
 export const BottomTabs = () => {
+
   return (
     <Tab.Navigator
       initialRouteName="Home_screen"
       shifting={true}
       sceneAnimationEnabled={false}
+      activeColor="white"
+      inactiveColor="white"
+      barStyle={{ backgroundColor: '#263238' }}
     >
       <Tab.Screen
         name="Home"

@@ -48,7 +48,7 @@ function Home_screen() {
 			</View>
 			<View style={styles.servoContainer}>
 				<TouchableOpacity
-					style={[styles.servoButton, styles.shadowPlatform]}
+					style={[styles.servoButton, styles.shadowPlatform, { backgroundColor: servo === 'ON' ? '#33b249' : servo === 'OFF' ? 'red' : '#263238', }]}
 					onPress={toggleServo}
 					disabled={setModeText === 'Auto'}
 				>
@@ -60,7 +60,7 @@ function Home_screen() {
 			<View style={styles.btnContainer}>
 				<Text style={[styles.textMode, styles.textModeSetting]}>Mode: {setModeText}</Text>
 				<TouchableOpacity
-					style={[styles.modeButton, styles.shadowPlatform, { backgroundColor: btnBackgroundColor }]}
+					style={[styles.modeButton, styles.shadowPlatform, { backgroundColor: '#263238' }]}
 					onPress={animationSwitch}
 				>
 					<Animated.View style={[styles.animatedMode, animatedStyle]}>
@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
 	servoButton: {
 		width: 350,
 		height: 350,
-		backgroundColor: '#455a64',
 		borderRadius: 200,
 		borderWidth: 4,
 		borderColor: 'white',
