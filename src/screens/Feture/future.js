@@ -1,15 +1,15 @@
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 
-function History_screen() {
+function Feture_screen() {
   return (
     <View style={styles.container}>
-      <Text>History</Text>
+      <Text>Feture</Text>
     </View>
   );
 }
 
-export default History_screen;
+export default Feture_screen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
