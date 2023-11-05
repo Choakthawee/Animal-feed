@@ -5,23 +5,39 @@ function Status_screen() {
   return (
     <View style={styles.BG}>
       <View style={styles.bg_circleTem}>
-        <View style={styles.circle}>
-          <Text style={styles.text}>25°C</Text>
+        <View style={styles.box_text}>
+          <View style={styles.circle_out}>
+            <View style={styles.circle_in}>
+              <Text style={styles.text}>25°C</Text>
+            </View>
+          </View>
         </View>
       </View>
       <View style={styles.bg_circlefoodstocks}>
-        <View style={styles.circle}>
-          <Text style={styles.text}>FoodStocks out</Text>
+        <View style={styles.box_textend}>
+          <View style={styles.circle_out}>
+            <View style={styles.circle_in}>
+              <Text style={styles.text}>FoodStocks out</Text>
+            </View>
+          </View>
         </View>
       </View>
       <View style={styles.bg_circlefoodtray}>
-        <View style={styles.circle}>
-          <Text style={styles.text}>Foodtray out</Text>
+        <View style={styles.box_text}>
+          <View style={styles.circle_out}>
+            <View style={styles.circle_in}>
+              <Text style={styles.text}>Foodtray out</Text>
+            </View>
+          </View>
         </View>
       </View>
       <View style={styles.bg_circlePir}>
-        <View style={styles.circle}>
-          <Text style={styles.text}>Found something alive</Text>
+        <View style={styles.box_textend}>
+          <View style={styles.circle_out}>
+            <View style={styles.circle_in}>
+              <Text style={styles.text}>Found</Text>
+            </View>
+          </View>
         </View>
       </View>
       <View style={styles.bg_navbar} />
@@ -33,59 +49,83 @@ export default Status_screen;
 
 const styles = StyleSheet.create({
   BG: {
-    backgroundColor: "#b49c74",
+    backgroundColor: "#01161e",
     flex: 1,
-    
+
   },
   bg_circleTem: {
     flex: 3,
     justifyContent: "flex-start",
     padding: 10,
-    justifyContent:'center',
+    justifyContent: 'center',
   },
   bg_circlefoodstocks: {
     flex: 3,
-    backgroundColor: 'red',
+    // backgroundColor: 'red',
     padding: 10,
-    alignItems: 'flex-end', 
-    justifyContent:'center',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
   },
   bg_circlefoodtray: {
     flex: 3,
-    backgroundColor: 'green',
+    //backgroundColor: 'green',
     padding: 10,
-    alignItems: 'flex-start', 
-    justifyContent:'center',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
   },
   bg_circlePir: {
     flex: 3,
-    backgroundColor: 'blue',
+    // backgroundColor: 'blue',
     padding: 10,
     alignItems: 'flex-end',
-    justifyContent:'center', 
+    justifyContent: 'center',
   },
   bg_navbar: {
     flex: 1,
-    backgroundColor: 'yellow',
+    //backgroundColor: 'yellow',
     padding: 10,
-    
+
   },
-  circle: {
+  circle_out: {
     width: 125,
     height: 125,
     borderRadius: 100,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#86F73C",
     alignItems: "center",
     justifyContent: "center",
-    borderWidth:4,
-    borderColor:"#000000",
-
+    borderWidth: 4,
+    borderColor: "#fff",
+    shadowColor: '#000',
+    elevation: 5,
+    shadowRadius: 10, // เพิ่มความนูนของเงา
   },
-
+  circle_in: {
+    width: 110,
+    height: 110,
+    borderRadius: 100,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 3,
+    borderColor: "#ffff",
+  },
+  box_text: {
+    width: 320,
+    height: 125,
+    backgroundColor: "#383f51",
+    borderRadius: 100
+  },
+  box_textend: {
+    width: 320,
+    height: 125,
+    backgroundColor: "#383f51",
+    borderRadius: 100,
+    alignItems:'flex-end'
+  },
   text: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     color: "black",
-    textAlign:'center'
+    textAlign: 'center'
   },
 });
