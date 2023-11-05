@@ -7,13 +7,13 @@ const line = (width, height) => {
 		.line()
 		.x((d) => d.x)
 		.y((d) => d.y)([
-		{ x: width / 2, y: 0 },
-		{ x: width, y: 0 },
-		{ x: width, y: height },
-		{ x: 0, y: height },
-		{ x: 0, y: 0 },
-		{ x: width / 2, y: 0 },
-	]);
+			{ x: width / 2, y: 0 },
+			{ x: width, y: 0 },
+			{ x: width, y: height },
+			{ x: 0, y: height },
+			{ x: 0, y: 0 },
+			{ x: width / 2, y: 0 },
+		]);
 
 	return path;
 };
@@ -28,22 +28,22 @@ const lineCurvedDown = (iPosition, height, circle) => {
 		.x((d) => d.x)
 		.y((d) => d.y)
 		.curve(shape.curveBasis)([
-		{ x: position - scale(20), y: 0 }, // border center left
-		{ x: position - scale(10), y: scale(2) },
-		{ x: position - scale(2), y: scale(10) },
-		{ x: position, y: scale(17) },
+			{ x: position - scale(20), y: 0 }, // border center left
+			{ x: position - scale(10), y: scale(2) },
+			{ x: position - scale(2), y: scale(10) },
+			{ x: position, y: scale(17) },
 
-		{ x: trim - scale(25), y: height / 2 + scale(2) },
-		{ x: trim - scale(10), y: height / 2 + scale(10) },
-		{ x: trim, y: height / 2 + scale(10) },
-		{ x: trim + scale(10), y: height / 2 + scale(10) },
-		{ x: trim + scale(25), y: height / 2 + scale(2) },
+			{ x: trim - scale(25), y: height / 2 + scale(2) },
+			{ x: trim - scale(10), y: height / 2 + scale(10) },
+			{ x: trim, y: height / 2 + scale(10) },
+			{ x: trim + scale(10), y: height / 2 + scale(10) },
+			{ x: trim + scale(25), y: height / 2 + scale(2) },
 
-		{ x: circleWidth, y: scale(17) }, // border center right
-		{ x: circleWidth + scale(2), y: scale(10) },
-		{ x: circleWidth + scale(10), y: 0 },
-		{ x: circleWidth + scale(20), y: 0 },
-	]);
+			{ x: circleWidth, y: scale(17) }, // border center right
+			{ x: circleWidth + scale(2), y: scale(10) },
+			{ x: circleWidth + scale(10), y: 0 },
+			{ x: circleWidth + scale(20), y: 0 },
+		]);
 
 	return curved;
 };
