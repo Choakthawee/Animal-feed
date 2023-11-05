@@ -8,8 +8,11 @@ function Status_screen() {
         <View style={styles.box_text}>
           <View style={styles.circle_out}>
             <View style={styles.circle_in}>
-              <Text style={styles.text}>25°C</Text>
+              <Text style={styles.h1}>อุณหภูมิ</Text>
             </View>
+          </View>
+          <View style={styles.bg_Text}>
+            <Text style={styles.h2}>25°C</Text>
           </View>
         </View>
       </View>
@@ -17,8 +20,11 @@ function Status_screen() {
         <View style={styles.box_textend}>
           <View style={styles.circle_out}>
             <View style={styles.circle_in}>
-              <Text style={styles.text}>FoodStocks out</Text>
+              <Text style={styles.h1}>อาหาร</Text>
             </View>
+          </View>
+          <View style={styles.bg_Text}>
+            <Text style={styles.h2}>ยังเหลืออยู่</Text>
           </View>
         </View>
       </View>
@@ -26,8 +32,11 @@ function Status_screen() {
         <View style={styles.box_text}>
           <View style={styles.circle_out}>
             <View style={styles.circle_in}>
-              <Text style={styles.text}>Foodtray out</Text>
+              <Text style={styles.h1}>อาหารในถาด</Text>
             </View>
+          </View>
+          <View style={styles.bg_Text}>
+            <Text style={styles.h2}>ยังเหลืออยู่</Text>
           </View>
         </View>
       </View>
@@ -35,8 +44,11 @@ function Status_screen() {
         <View style={styles.box_textend}>
           <View style={styles.circle_out}>
             <View style={styles.circle_in}>
-              <Text style={styles.text}>Found</Text>
+              <Text style={styles.h1}>มีสิ่งมีชีวิตอยู่ไหม</Text>
             </View>
+          </View>
+          <View style={styles.bg_Text}>
+            <Text style={styles.h2}>อยู่</Text>
           </View>
         </View>
       </View>
@@ -86,23 +98,26 @@ const styles = StyleSheet.create({
     padding: 10,
 
   },
+  bg_Text:{
+    flex:1,
+    justifyContent:'center',
+    
+  },
   circle_out: {
     width: 125,
     height: 125,
     borderRadius: 100,
-    backgroundColor: "#86F73C",
+    backgroundColor: "#7ae582",
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 4,
     borderColor: "#fff",
-    textShadowColor: 'rgba(0, 0, 0, 0.5)',
-		textShadowOffset: { width: 1.5, height: 2 },
-		textShadowRadius: 5,
+    elevation: 10,
     shadowColor: 'black',
-		shadowOffset: { width: 1.5, height: 2 },
-		shadowOpacity: 0.5,
-		shadowRadius: 2,
-    
+    shadowOffset: { width: 1.5, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+
   },
   circle_in: {
     width: 110,
@@ -113,60 +128,49 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderWidth: 3,
     borderColor: "#ffff",
-    textShadowColor: 'rgba(0, 0, 0, 0.5)',
-		textShadowOffset: { width: 1.5, height: 2 },
-		textShadowRadius: 5,
+    elevation: 10,
     shadowColor: 'black',
-		shadowOffset: { width: 1.5, height: 2 },
-		shadowOpacity: 0.5,
-		shadowRadius: 2,
+    shadowOffset: { width: 1.5, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
   },
   box_text: {
-    width: 320,
+    width: "95%",
     height: 125,
     backgroundColor: "#383f51",
     borderRadius: 100,
     elevation: 10,
-		textShadowColor: 'rgba(0, 0, 0, 0.5)',
-		textShadowOffset: { width: 1.5, height: 2 },
-		textShadowRadius: 5,
     shadowColor: 'black',
-		shadowOffset: { width: 1.5, height: 2 },
-		shadowOpacity: 0.5,
-		shadowRadius: 2,
+    shadowOffset: { width: 1.5, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    flexDirection:"row",
+    
   },
   box_textend: {
-    width: 320,
+    width: "95%",
     height: 125,
     backgroundColor: "#383f51",
     borderRadius: 100,
-    alignItems:'flex-end',
     elevation: 10,
-		textShadowColor: 'rgba(0, 0, 0, 0.5)',
-		textShadowOffset: { width: 1.5, height: 2 },
-		textShadowRadius: 5,
     shadowColor: 'black',
-		shadowOffset: { width: 1.5, height: 2 },
-		shadowOpacity: 0.5,
-		shadowRadius: 2,
+    shadowOffset: { width: 1.5, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    flexDirection:'row-reverse'
+  
   },
-  text: {
-    fontSize: 18,
+  h1: {
+    fontSize: 20,
     fontWeight: "bold",
     color: "black",
+    textAlign: 'center',
+    
+  },
+  h2: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "white",
     textAlign: 'center'
   },
-  shadowSetting: {
-		elevation: 10,
-		textShadowColor: 'rgba(0, 0, 0, 0.5)',
-		textShadowOffset: { width: 1.5, height: 2 },
-		textShadowRadius: 5,
-	},
-	shadowPlatform: {
-		elevation: 5,
-		shadowColor: 'black',
-		shadowOffset: { width: 1.5, height: 2 },
-		shadowOpacity: 0.5,
-		shadowRadius: 2,
-	},
 });
