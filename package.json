@@ -11,11 +11,6 @@
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/bottom-tabs": "^6.5.7",
-<<<<<<< HEAD
-=======
-    "@react-navigation/drawer": "^6.6.6",
-    "@react-navigation/material-bottom-tabs": "^6.2.19",
->>>>>>> 0a03fe7169021a33bd1085f5258bac9a07d3ed86
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/stack": "^6.3.20",
     "d3-shape": "^3.2.0",
