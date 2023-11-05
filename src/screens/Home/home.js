@@ -17,6 +17,22 @@ function Home_screen() {
 
 	const btnBackgroundColor = isOff ? 'red' : '#33b249';
 
+	const animationSwitch = () => {
+		if (animation.value === 0) {
+			animation.value = withTiming(144, { duration: 500 });
+			setIsOff(false);
+			setIsOffText('ON');
+			setSetModeText('Auto');
+			setServo('Auto');
+		} else {
+			animation.value = withTiming(0, { duration: 500 });
+			setIsOff(true);
+			setIsOffText('OFF');
+			setSetModeText('Manual');
+			setServo('OFF');
+		}
+	}
+
 	const toggleServo = () => {
 		if (servo === 'OFF') {
 			setServo('ON');
@@ -34,6 +50,7 @@ function Home_screen() {
 				<TouchableOpacity
 					style={styles.servoButton}
 					onPress={toggleServo}
+					disabled={setModeText === 'Auto'}
 				>
 					<Text style={[styles.servoText, styles.shadowSetting]}>
 						{servo}
@@ -44,19 +61,7 @@ function Home_screen() {
 				<Text style={[styles.textMode, styles.textModeSetting]}>Mode: {setModeText}</Text>
 				<TouchableOpacity
 					style={[styles.modeButton, { backgroundColor: btnBackgroundColor }]}
-					onPress={() => {
-						if (animation.value === 0) {
-							animation.value = withTiming(144, { duration: 500 });
-							setIsOff(false);
-							setIsOffText('ON');
-							setSetModeText('Auto');
-						} else {
-							animation.value = withTiming(0, { duration: 500 });
-							setIsOff(true);
-							setIsOffText('OFF');
-							setSetModeText('Manual');
-						}
-					}}
+					onPress={animationSwitch}
 				>
 					<Animated.View style={[styles.animatedMode, animatedStyle]}>
 						<Text style={[{ fontSize: 24, color: 'black' }, styles.textModeSetting]}>{isOffText}</Text>
@@ -73,7 +78,7 @@ export default Home_screen;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#dbbc8c",
+		backgroundColor: "white",
 		alignItems: "center",
 		justifyContent: "center",
 	},
@@ -88,7 +93,7 @@ const styles = StyleSheet.create({
 	servoButton: {
 		width: 350,
 		height: 350,
-		backgroundColor: '#C5D6BA',
+		backgroundColor: '#455a64',
 		borderRadius: 200,
 		borderWidth: 4,
 		borderColor: 'white',
@@ -107,6 +112,7 @@ const styles = StyleSheet.create({
 	},
 	textMode: {
 		fontSize: 24,
+		color: 'black',
 	},
 	modeButton: {
 		justifyContent: 'center',
