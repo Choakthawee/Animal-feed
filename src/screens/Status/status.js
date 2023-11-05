@@ -1,15 +1,15 @@
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 
-function Profile() {
+function Status_screen() {
   return (
     <View style={styles.container}>
-      <Text>Profile</Text>
+      <Text>Status</Text>
     </View>
   );
 }
 
-export default Profile;
+export default Status_screen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,

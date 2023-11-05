@@ -1,6 +1,6 @@
 import { SafeAreaView, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { BottomTabNavigator } from "./src/navigator/tabbar";
+import { BottomTabNavigator } from "./src/navigator/tabbar/navbar";
 
 export default function App() {
   return (

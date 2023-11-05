@@ -1,15 +1,15 @@
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 
-function ProfileSettings() {
+function History_screen() {
   return (
     <View style={styles.container}>
-      <Text>Setting</Text>
+      <Text>History</Text>
     </View>
   );
 }
 
-export default ProfileSettings;
+export default History_screen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
