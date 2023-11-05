@@ -1,158 +1,50 @@
-import React, { useState } from "react";
-import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Table, Row, Rows } from 'react-native-table-component';
 
 function FoodHistory() {
-    const animation = useSharedValue(0);
-    const [isOffText, setIsOffText] = useState('OFF');
-    const [setModeText, setSetModeText] = useState('Auto');
-    const [isOff, setIsOff] = useState(true);
-    const [servo, setServo] = useState('OFF');
+    const tableHead = ['ครั้งที่', 'วันที่', 'เวลา'];
+    const tableData = [
+        ['2023-11-06', '08:30 AM'],
+        ['2023-11-06', '09:30 AM'],
+        ['2023-11-06', '12:30 AM'],
+        ['2023-11-07', '12:45 PM'],
+        ['2023-11-08', '06:15 PM'],
+    ];
 
-    const animatedStyle = useAnimatedStyle(() => {
-        return {
-            transform: [{ translateX: animation.value }],
-        };
+    // สร้างตัวแปรสำหรับเก็บค่า (ครั้งที่) เริ่มต้นที่ 1
+    let count = 1;
+
+    // สร้าง Rows โดยเช็คว่าวันเปลี่ยนหรือไม่
+    const rows = tableData.map((rowData, index) => {
+        const date = rowData[0];
+        // เช็คว่าวันเปลี่ยนหรือไม่ ถ้าเปลี่ยนให้นับครั้งที่ใหม่
+        if (index > 0 && date !== tableData[index - 1][0]) {
+            count = 1;
+        }
+        const newRowData = [count, ...rowData];
+        count++; // เพิ่มค่า (ครั้งที่) สำหรับครั้งถัดไป
+        return newRowData;
     });
-
-    const btnBackgroundColor = isOff ? 'red' : '#33b249';
-
-    const animationSwitch = () => {
-        if (animation.value === 0) {
-            animation.value = withTiming(144, { duration: 500 });
-            setIsOff(false);
-            setIsOffText('ON');
-            setSetModeText('Auto');
-            setServo('Auto');
-        } else {
-            animation.value = withTiming(0, { duration: 500 });
-            setIsOff(true);
-            setIsOffText('OFF');
-            setSetModeText('Manual');
-            setServo('OFF');
-        }
-    }
-
-    const toggleServo = () => {
-        if (servo === 'OFF') {
-            setServo('ON');
-        } else {
-            setServo('OFF');
-        }
-    };
 
     return (
         <View style={styles.container}>
-            <View style={styles.title}>
-                <Text style={[styles.textHeader, styles.textModeSetting]}>Animal Feed App</Text>
-            </View>
-            <View style={styles.servoContainer}>
-                <TouchableOpacity
-                    style={[styles.servoButton, styles.shadowPlatform]}
-                    onPress={toggleServo}
-                    disabled={setModeText === 'Auto'}
-                >
-                    <Text style={[styles.servoText, styles.shadowSetting]}>
-                        {servo}
-                    </Text>
-                </TouchableOpacity>
-            </View>
-            <View style={styles.btnContainer}>
-                <Text style={[styles.textMode, styles.textModeSetting]}>Mode: {setModeText}</Text>
-                <TouchableOpacity
-                    style={[styles.modeButton, styles.shadowPlatform, { backgroundColor: btnBackgroundColor }]}
-                    onPress={animationSwitch}
-                >
-                    <Animated.View style={[styles.animatedMode, animatedStyle]}>
-                        <Text style={[{ fontSize: 24, color: 'black' }, styles.textModeSetting]}>{isOffText}</Text>
-                    </Animated.View>
-                </TouchableOpacity>
-            </View>
+            <Table borderStyle={{ borderWidth: 2, borderColor: '#c8e1ff' }}>
+                <Row data={tableHead} style={styles.head} textStyle={styles.text} />
+                <Rows data={rows} textStyle={styles.text} />
+            </Table>
         </View>
     );
 }
 
-export default FoodHistory;
-
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "white",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    title: {
-        flex: 1,
-        justifyContent: 'center',
-    },
-    servoContainer: {
-        flex: 2,
-        justifyContent: 'center',
-    },
-    servoButton: {
-        width: 350,
-        height: 350,
-        backgroundColor: '#455a64',
-        borderRadius: 200,
-        borderWidth: 4,
-        borderColor: 'white',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    servoText: {
-        color: 'white',
-        fontSize: 70,
-    },
-    btnContainer: {
-        flex: 2,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    textMode: {
-        fontSize: 24,
-        color: 'black',
-    },
-    modeButton: {
-        justifyContent: 'center',
-        width: 250,
-        height: 104,
-        borderWidth: 3,
-        borderRadius: 100,
-        paddingLeft: 5,
-        borderColor: 'white',
-    },
-    textModeSetting: {
-        fontSize: 24,
-        elevation: 10,
-        textShadowColor: 'rgba(0, 0, 0, 0.3)',
-        textShadowOffset: { width: 1.5, height: 2 },
-        textShadowRadius: 5,
-    },
-    textHeader: {
-        fontSize: 24,
-        fontWeight: 'bold',
-    },
-    animatedMode: {
-        width: 90,
-        height: 90,
-        borderRadius: 50,
-        borderWidth: 0,
         backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center',
+        padding: 16,
     },
-    shadowSetting: {
-        elevation: 10,
-        textShadowColor: 'rgba(0, 0, 0, 0.5)',
-        textShadowOffset: { width: 1.5, height: 2 },
-        textShadowRadius: 5,
-    },
-    shadowPlatform: {
-        elevation: 5,
-        shadowColor: 'black',
-        shadowOffset: { width: 1.5, height: 2 },
-        shadowOpacity: 0.5,
-        shadowRadius: 2,
-    },
+    head: { height: 40, backgroundColor: '#f1f8ff' },
+    text: { margin: 6 },
 });
+
+export default FoodHistory;
