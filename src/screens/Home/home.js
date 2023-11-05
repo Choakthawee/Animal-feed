@@ -48,7 +48,7 @@ function Home_screen() {
 			</View>
 			<View style={styles.servoContainer}>
 				<TouchableOpacity
-					style={styles.servoButton}
+					style={[styles.servoButton, styles.shadowPlatform]}
 					onPress={toggleServo}
 					disabled={setModeText === 'Auto'}
 				>
@@ -60,7 +60,7 @@ function Home_screen() {
 			<View style={styles.btnContainer}>
 				<Text style={[styles.textMode, styles.textModeSetting]}>Mode: {setModeText}</Text>
 				<TouchableOpacity
-					style={[styles.modeButton, { backgroundColor: btnBackgroundColor }]}
+					style={[styles.modeButton, styles.shadowPlatform, { backgroundColor: btnBackgroundColor }]}
 					onPress={animationSwitch}
 				>
 					<Animated.View style={[styles.animatedMode, animatedStyle]}>
@@ -99,7 +99,6 @@ const styles = StyleSheet.create({
 		borderColor: 'white',
 		justifyContent: 'center',
 		alignItems: 'center',
-		elevation: 10,
 	},
 	servoText: {
 		color: 'white',
@@ -122,7 +121,6 @@ const styles = StyleSheet.create({
 		borderRadius: 100,
 		paddingLeft: 5,
 		borderColor: 'white',
-		elevation: 10,
 	},
 	textModeSetting: {
 		fontSize: 24,
@@ -149,5 +147,12 @@ const styles = StyleSheet.create({
 		textShadowColor: 'rgba(0, 0, 0, 0.5)',
 		textShadowOffset: { width: 1.5, height: 2 },
 		textShadowRadius: 5,
-	}
+	},
+	shadowPlatform: {
+		elevation: 5,
+		shadowColor: 'black',
+		shadowOffset: { width: 1.5, height: 2 },
+		shadowOpacity: 0.5,
+		shadowRadius: 2,
+	},
 });

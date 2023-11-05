@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Text, View, Dimensions, Image } from "react-native";
 import Home_screen from "../../screens/Home/home";
 import Status_screen from "../../screens/Status/status";
-import Feture_screen from "../../screens/Feture/future";
+import Feature_screen from "../../screens/Feature/feature";
 import { getPathDown } from "./curve";
 import { Svg, Path } from "react-native-svg";
 import { scale } from "react-native-size-scaling";
@@ -89,8 +89,8 @@ export const BottomTabNavigator = () => {
 				}}
 			/>
 			<Tab.Screen
-				name="History"
-				component={Feture_screen}
+				name="Feature"
+				component={Feature_screen}
 				options={{
 					headerShown: false,
 					tabBarItemStyle: {
@@ -109,7 +109,7 @@ export const BottomTabNavigator = () => {
 						/>
 					),
 					tabBarLabel: () => (
-						<Text className="text-black text-xs">Feture</Text>
+						<Text className="text-black text-xs">Feature</Text>
 					),
 				}}
 			/>
