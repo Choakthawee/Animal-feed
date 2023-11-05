@@ -25,14 +25,14 @@ export const BottomTabs = () => {
         name="Status"
         component={Status_screen}
         options={{
-          tabBarIcon: 'bell',
+          tabBarIcon: 'list-status',
         }}
       />
       <Tab.Screen
         name="Feature"
         component={Feature_screen}
         options={{
-          tabBarIcon: 'head-lightbulb',
+          tabBarIcon: 'feature-search',
         }}
       />
     </Tab.Navigator>

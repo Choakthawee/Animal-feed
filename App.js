@@ -1,6 +1,5 @@
 import { SafeAreaView, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { BottomTabNavigator } from "./src/navigator/tabbar/navbar";
 import { Provider as PaperProvider } from 'react-native-paper';
 import { BottomTabs } from './src/navigator/tabbar/papernavber';
 export default function App() {
@@ -8,7 +7,7 @@ export default function App() {
     <SafeAreaView style={styles.droidSafeArea}>
       <NavigationContainer>
         <PaperProvider>
-          <BottomTabs/>
+          <BottomTabs />
         </PaperProvider>
       </NavigationContainer>
     </SafeAreaView>
