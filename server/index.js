@@ -20,8 +20,8 @@ connection.connect((err) => {
   console.log('เชื่อมต่อกับ MySQL สำเร็จ');
 });
 
-app.listen(3000, () => {
-  console.log('Server เริ่มต้นที่พอร์ต 3000');
+app.listen(3001, () => {
+  console.log('Server เริ่มต้นที่พอร์ต 3001');
 });
 
 app.get('/data', (req, res) => {
@@ -39,6 +39,19 @@ app.post("/distance", (req, res) => {
   let valuedistance = req.body.value;
   console.log(valuedistance)
   connection.query('UPDATE status SET distance = ? WHERE id= 1',[valuedistance], (err, rows) => {
+    if (err) {
+      console.error('ไม่สามารถดึงข้อมูล: ' + err);
+      res.status(500).send('มีปัญหาในการดึงข้อมูล');
+      return;
+    }
+    res.status(200).json({"msg":"susess","update":rows});
+  });
+});
+
+app.post("/tempereture", (req, res) => {
+  let valuetem = req.body.value;
+  console.log(valuetem)
+  connection.query('UPDATE status SET temperature = ? WHERE id= 1',[valuetem], (err, rows) => {
     if (err) {
       console.error('ไม่สามารถดึงข้อมูล: ' + err);
       res.status(500).send('มีปัญหาในการดึงข้อมูล');
