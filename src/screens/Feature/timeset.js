@@ -1,40 +1,98 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import DateTimePicker from '@react-native-community/datetimepicker';
+import {
+	View,
+	Text,
+	TouchableOpacity,
+	FlatList,
+	Button,
+	StyleSheet,
+} from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 function TimeSet() {
-  const [selectedTime, setSelectedTime] = useState(new Date());
-  const [showPicker, setShowPicker] = useState(false);
+	const [selectedTime, setSelectedTime] = useState(new Date());
+	const [showPicker, setShowPicker] = useState(false);
+	const [savedTimes, setSavedTimes] = useState([]);
 
-  const handleTimeChange = (event, selected) => {
-    if (selected) {
-      setSelectedTime(selected);
-    }
-    setShowPicker(false);
-  };
+	const handleTimeChange = (event, selected) => {
+		if (selected) {
+			setSelectedTime(selected);
+		}
+		setShowPicker(false);
+	};
 
-  const showTimePicker = () => {
-    setShowPicker(true);
-  };
+	const showTimePicker = () => {
+		setShowPicker(true);
+	};
 
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <TouchableOpacity onPress={showTimePicker}>
-        <Text style={{ fontSize: 24 }}>
-          {selectedTime.toLocaleTimeString()}
-        </Text>
-      </TouchableOpacity>
-      {showPicker && (
-        <DateTimePicker
-          value={selectedTime}
-          mode="time"
-          is24Hour={true}
-          display="default"
-          onChange={handleTimeChange}
-        />
-      )}
-    </View>
-  );
+	const saveTime = () => {
+		setSavedTimes([...savedTimes, selectedTime]);
+	};
+
+	const deleteTime = (index) => {
+		const updatedTimes = [...savedTimes];
+		updatedTimes.splice(index, 1);
+		setSavedTimes(updatedTimes);
+	};
+
+	return (
+		<View style={styles.container}>
+			<View style={{ flex: 1, justifyContent: "center" }}>
+				<Text style={{ fontSize: 30 }}>ตั้งเวลาให้อาหาร</Text>
+			</View>
+			<View style={{ flex: 1 }}>
+				<TouchableOpacity onPress={showTimePicker}>
+					<Text style={{ fontSize: 40 }}>
+						{selectedTime.toLocaleTimeString()}
+					</Text>
+				</TouchableOpacity>
+				<Button title="Save" onPress={saveTime} />
+			</View>
+			{showPicker && (
+				<DateTimePicker
+					value={selectedTime}
+					mode="time"
+					is24Hour={true}
+					display="default"
+					onChange={handleTimeChange}
+				/>
+			)}
+			<FlatList
+				style={styles.flatList}
+				data={savedTimes}
+				keyExtractor={(item, index) => index.toString()}
+				renderItem={({ item, index }) => (
+					<View style={styles.listItem}>
+						<Text>{`Saved Time ${
+							index + 1
+						}: ${item.toLocaleTimeString()}`}</Text>
+						<Button
+							title="Delete"
+							color="red"
+							onPress={() => deleteTime(index)}
+						/>
+					</View>
+				)}
+			/>
+		</View>
+	);
 }
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	flatList: {
+		flex: 1,
+	},
+	listItem: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+		marginVertical: 5,
+	},
+});
 
 export default TimeSet;
