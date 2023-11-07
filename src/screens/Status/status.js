@@ -1,7 +1,27 @@
-import React from "react";
+import React,{useState,useEffect}from "react";
 import { Text, View, StyleSheet } from "react-native";
-
+import axios from "axios";
 function Status_screen() {
+  const [statusData, setStatusData] = useState({});
+  
+  
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const response = await axios.get("http://192.168.43.113:3001/status");
+        const data = response.data;
+        console.log(data);
+        setStatusData(data[0]); 
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    const interval = setInterval(() => {
+      load();
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [setStatusData]);
+  
 	return (
 		<View style={styles.BG}>
 			<View style={styles.bg_circleTem}>
@@ -12,7 +32,7 @@ function Status_screen() {
 						</View>
 					</View>
 					<View style={styles.bg_Text}>
-						<Text style={styles.h2}>25°C</Text>
+						<Text style={styles.h2}>{statusData.temperature}°C</Text>
 					</View>
 				</View>
 			</View>
@@ -48,7 +68,7 @@ function Status_screen() {
 						</View>
 					</View>
 					<View style={styles.bg_Text}>
-						<Text style={styles.h2}>อยู่</Text>
+						<Text style={styles.h2}>{statusData.pir}</Text>
 					</View>
 				</View>
 			</View>

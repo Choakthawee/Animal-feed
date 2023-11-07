@@ -1,33 +1,44 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
-
+import axios from "axios";
 function Home_screen() {
 	const animation = useSharedValue(0);
 	const [isOffText, setIsOffText] = useState('OFF');
-	const [setModeText, setSetModeText] = useState('Auto');
+	const [setModeText, setSetModeText] = useState('Manual');
 	const [isOff, setIsOff] = useState(true);
 	const [servo, setServo] = useState('OFF');
-
-	const animatedStyle = useAnimatedStyle(() => {
+	const [mode,setMode] = useState(0);
+	const animatedStyle = 	useAnimatedStyle(() => {
 		return {
 			transform: [{ translateX: animation.value }],
 		};
 	});
 
+	const load = () => {
+		axios.post("http://192.168.43.113:3001/setmodeservo",`type=${mode}&value=${servo === "OFF"?"1":"0"}`)
+			.then(re => {
+				console.log(re.data)
+			})
+	}
+
 	const btnBackgroundColor = isOff ? 'red' : '#33b249';
 
 	const animationSwitch = () => {
-		if (animation.value === 0) {
+		if (isOff) {
 			animation.value = withTiming(144, { duration: 500 });
 			setIsOff(false);
 			setIsOffText('ON');
+			setMode(1);
+			console.log(mode)
 			setSetModeText('Auto');
 			setServo('Auto');
 		} else {
 			animation.value = withTiming(0, { duration: 500 });
 			setIsOff(true);
 			setIsOffText('OFF');
+			setMode(0);
+			console.log(mode)
 			setSetModeText('Manual');
 			setServo('OFF');
 		}
@@ -41,6 +52,10 @@ function Home_screen() {
 		}
 	};
 
+	useEffect(() => {
+		load(); // Call load() function after any state changes.
+	  }, [servo, mode]);
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.title}>
@@ -49,7 +64,7 @@ function Home_screen() {
 			<View style={styles.servoContainer}>
 				<TouchableOpacity
 					style={[styles.servoButton, styles.shadowPlatform, { backgroundColor: servo === 'ON' ? '#33b249' : servo === 'OFF' ? 'red' : '#263238', }]}
-					onPress={toggleServo}
+					onPress={()=>{toggleServo();}}
 					disabled={setModeText === 'Auto'}
 				>
 					<Text style={[styles.servoText, styles.shadowSetting]}>
@@ -61,7 +76,7 @@ function Home_screen() {
 				<Text style={[styles.textMode, styles.textModeSetting]}>Mode: {setModeText}</Text>
 				<TouchableOpacity
 					style={[styles.modeButton, styles.shadowPlatform, { backgroundColor: '#263238' }]}
-					onPress={animationSwitch}
+					onPress={()=>{animationSwitch();}}
 				>
 					<Animated.View style={[styles.animatedMode, animatedStyle]}>
 						<Text style={[{ fontSize: 24, color: 'black' }, styles.textModeSetting]}>{isOffText}</Text>
