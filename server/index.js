@@ -27,7 +27,6 @@ app.listen(3001, () => {
 });
 
 app.get('/status', (req, res) => {
-  console.log("Hello");
   connection.query('SELECT * FROM status WHERE id = 1', (err, rows) => {
     if (err) {
       console.error('ไม่สามารถดึงข้อมูล: ' + err);
@@ -36,8 +35,8 @@ app.get('/status', (req, res) => {
     } else {
       if (rows.length > 0) { // ตรวจสอบว่ามีข้อมูลที่ถูกดึงมาหรือไม่
         console.log(rows);
-        res.status(200).json(rows);
-
+        const dataToSend = { rows: rows, v: servoValue };
+        res.status(200).json(dataToSend);
       } else {
         res.status(404).send('ไม่พบข้อมูล');
       }

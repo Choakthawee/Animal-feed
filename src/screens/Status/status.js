@@ -3,15 +3,16 @@ import { Text, View, StyleSheet } from "react-native";
 import axios from "axios";
 function Status_screen() {
   const [statusData, setStatusData] = useState({});
-  
+  const [servo,updateServo] = useState("");
   
   useEffect(() => {
     const load = async () => {
       try {
         const response = await axios.get("http://192.168.43.113:3001/status");
         const data = response.data;
-        console.log(data);
-        setStatusData(data[0]); 
+        console.log(data.rows[0]);
+        setStatusData(data.rows[0]); 
+		updateServo(data.v); // เรียกใช้ฟังก์ชันเพื่ออัปเดตค่า Servo
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -20,7 +21,33 @@ function Status_screen() {
       load();
     }, 2000);
     return () => clearInterval(interval);
-  }, [setStatusData]);
+  }, [setStatusData,updateServo]);
+  
+  const checkpir = ()=> {
+	if(statusData.pir == 1){
+		return "มีสิ่งมีชีวิตอยู่แถวนี้";
+	  }else{
+		return "ไม่มีสิ่งมีชีวิตอยู่แถวนี้";
+	  }
+  }
+  const checkfoodtray = () =>{
+	if(statusData.distance > 3){
+		return "อาหารหมดแล้ว";
+	}else{
+		return "อาหารยังไม่หมด";
+	}
+  }
+  const checkfoodstork = () => {
+	console.log(statusData)
+	if(servo == 0 ){
+		if(statusData.distance > 3){
+			return "อาหารในสต๊อกหมด"
+		
+	}else{
+		return "อาหารในสต๊อกยังอยู่"
+	}
+}
+  }
   
 	return (
 		<View style={styles.BG}>
@@ -44,7 +71,7 @@ function Status_screen() {
 						</View>
 					</View>
 					<View style={styles.bg_Text}>
-						<Text style={styles.h2}>ยังเหลืออยู่</Text>
+						<Text style={styles.h2}>{checkfoodstork()}</Text>
 					</View>
 				</View>
 			</View>
@@ -56,7 +83,7 @@ function Status_screen() {
 						</View>
 					</View>
 					<View style={styles.bg_Text}>
-						<Text style={styles.h2}>ยังเหลืออยู่</Text>
+						<Text style={styles.h2}>{checkfoodtray()}</Text>
 					</View>
 				</View>
 			</View>
@@ -68,7 +95,7 @@ function Status_screen() {
 						</View>
 					</View>
 					<View style={styles.bg_Text}>
-						<Text style={styles.h2}>{statusData.pir}</Text>
+						<Text style={styles.h2}>{checkpir()}</Text>
 					</View>
 				</View>
 			</View>
