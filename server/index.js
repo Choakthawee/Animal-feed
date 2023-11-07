@@ -120,7 +120,7 @@ app.post("/setmodeservo", (req, res) => {
   servoType= req.body.type;
   servoValue= req.body.value;
   if (servoValue==0){
-     report_time()
+     report_time();
   }
   res.json({
     "type":servoType,

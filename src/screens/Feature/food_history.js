@@ -14,7 +14,7 @@ function FoodHistory() {
 			console.log(data);
 			setTableData(data);
 		} catch (error) {
-			console.error("Error fetching data:", error);
+			
 		}
 	};
 
@@ -33,6 +33,8 @@ function FoodHistory() {
 		const newRowData = [num, date, time];
 		return newRowData;
 	});
+
+	
 
 	return (
 		<ScrollView style={styles.container}>
