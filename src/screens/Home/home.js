@@ -22,15 +22,6 @@ function Home_screen() {
 			})
 	}
 
-	const date_time = () => {
-		axios.post("http://192.168.43.113:3001/date_time",)
-			.then(re => {
-				console.log(re.data)
-			})
-	}
-
-	const btnBackgroundColor = isOff ? 'red' : '#33b249';
-
 	const animationSwitch = () => {
 		if (isOff) {
 			animation.value = withTiming(144, { duration: 500 });
