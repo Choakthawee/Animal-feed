@@ -1,39 +1,49 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, Button } from "react-native";
 import { Table, Row, Rows } from "react-native-reanimated-table";
+import axios from 'axios';
+import { ScrollView } from "react-native";
 
 function FoodHistory() {
-	const tableHead = ["ครั้งที่", "วันที่", "เวลา"];
-	const tableData = [
-		["2023-11-06", "08:30 AM"],
-		["2023-11-06", "09:30 AM"],
-		["2023-11-06", "12:30 AM"],
-		["2023-11-07", "12:45 PM"],
-		["2023-11-08", "06:15 PM"],
-	];
-
-	// สร้างตัวแปรสำหรับเก็บค่า (ครั้งที่) เริ่มต้นที่ 1
-	let count = 1;
-
-	// สร้าง Rows โดยเช็คว่าวันเปลี่ยนหรือไม่
-	const rows = tableData.map((rowData, index) => {
-		const date = rowData[0];
-		// เช็คว่าวันเปลี่ยนหรือไม่ ถ้าเปลี่ยนให้นับครั้งที่ใหม่
-		if (index > 0 && date !== tableData[index - 1][0]) {
-			count = 1;
+	const [tableData, setTableData] = useState([]);
+	
+	const fetchData = async () => {
+		try {
+			const response = await axios.get("http://192.168.43.113:3001/date_time");
+			const data = response.data;
+			console.log(data);
+			setTableData(data);
+		} catch (error) {
+			console.error("Error fetching data:", error);
 		}
-		const newRowData = [count, ...rowData];
-		count++; // เพิ่มค่า (ครั้งที่) สำหรับครั้งถัดไป
+	};
+
+	useEffect(() => {
+		fetchData();
+	}, []); // Fetch data on initial component load
+
+	const handleRefresh = () => {
+		fetchData();
+	};
+
+	const rows = tableData.map((rowData, index) => {
+		const num = index + 1;
+		const date = rowData.date;
+		const time = rowData.time;
+		const newRowData = [num, date, time];
 		return newRowData;
 	});
 
 	return (
-		<View style={styles.container}>
+		<ScrollView style={styles.container}>
+			<View style={styles.buttonContainer}>
+				<Button title="Refresh" onPress={handleRefresh} />
+			</View>
 			<Table borderStyle={{ borderWidth: 2, borderColor: "#c8e1ff" }}>
-				<Row data={tableHead} style={styles.head} textStyle={styles.text} />
+				<Row data={["ครั้งที่", "วันที่", "เวลา"]}  style={styles.head} textStyle={styles.text} />
 				<Rows data={rows} textStyle={styles.text} />
 			</Table>
-		</View>
+		</ScrollView>
 	);
 }
 
@@ -45,6 +55,10 @@ const styles = StyleSheet.create({
 	},
 	head: { height: 40, backgroundColor: "#f1f8ff" },
 	text: { margin: 6 },
+	buttonContainer: {
+		alignItems: 'center',
+		marginBottom: 10,
+	},
 });
 
 export default FoodHistory;

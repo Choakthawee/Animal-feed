@@ -54,14 +54,13 @@ function Home_screen() {
 	const toggleServo = () => {
 		if (servo === 'OFF') {
 			setServo('ON');
-			date_time();
 		} else {
 			setServo('OFF');
 		}
 	};
 
 	useEffect(() => {
-		load(); // Call load() function after any state changes.
+		load();
 	  }, [servo, mode]);
 
 	return (

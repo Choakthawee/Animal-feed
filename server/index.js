@@ -2,6 +2,8 @@ const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
 const app = express();
+const moment = require('moment-timezone');
+
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true })); //ตอน post ต้องใช้ email=ASASD&password=asdsad ไม่ใช้ที่ ต้องค่าเป็น appcation/json ที่ต้องส่ง  post เป็น json
@@ -45,25 +47,37 @@ app.get('/status', (req, res) => {
   
 });
 
-app.post("/date_time", (req, res) => {
-  servoType = req.body.type;
-  servoValue = req.body.value;
+app.get('/date_time', (req, res) => {
+  connection.query('SELECT * FROM date_time', (err, rows) => {
+    if (err) {
+      console.error('ไม่สามารถดึงข้อมูล: ' + err);
+      res.status(500).send('มีปัญหาในการดึงข้อมูล');
+      return;
+    } else {
+      if (rows.length > 0) { // ตรวจสอบว่ามีข้อมูลที่ถูกดึงมาหรือไม่
+        console.log(rows);
+        
+        res.status(200).json(rows);
+      } else {
+        res.status(404).send('ไม่พบข้อมูล');
+      }
+    }
+  });
+});
 
-  const currentDate = new Date().toISOString().slice(0, 10);
-  const currentTime = new Date().toTimeString().slice(0, 8);
-
+const report_time = () => {
+  const currentDate = moment().tz('Asia/Bangkok').format('YYYY-MM-DD');
+  const currentTime = moment().tz('Asia/Bangkok').format('HH:mm:ss');
+  console.log( currentDate.toString() )
   connection.query('INSERT INTO date_time (date, time) VALUES (?, ?)', [currentDate, currentTime], (err, rows) => {
     if (err) {
       console.error('ไม่สามารถเพิ่มข้อมูล: ' + err);
       res.status(500).send('มีปัญหาในการเพิ่มข้อมูล');
       return;
     }
-    res.json({
-      "date": currentDate,
-      "time": currentTime
-    });
   });
-});
+};
+
 
 app.post("/distance", (req, res) => {
   let valuedistance = req.body.value;
@@ -105,6 +119,9 @@ app.post("/pir", (req, res) => {
 app.post("/setmodeservo", (req, res) => {
   servoType= req.body.type;
   servoValue= req.body.value;
+  if (servoValue==0){
+     report_time()
+  }
   res.json({
     "type":servoType,
     "v":servoValue
