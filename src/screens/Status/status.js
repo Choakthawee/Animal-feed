@@ -1,54 +1,52 @@
-import React,{useState,useEffect}from "react";
+import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import axios from "axios";
 function Status_screen() {
-  const [statusData, setStatusData] = useState({});
-  const [servo,updateServo] = useState("");
-  
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const response = await axios.get("http://192.168.43.113:3001/status");
-        const data = response.data;
-        console.log(data.rows[0]);
-        setStatusData(data.rows[0]); 
-		updateServo(data.v); // เรียกใช้ฟังก์ชันเพื่ออัปเดตค่า Servo
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    const interval = setInterval(() => {
-      load();
-    }, 2000);
-    return () => clearInterval(interval);
-  }, [setStatusData,updateServo]);
-  
-  const checkpir = ()=> {
-	if(statusData.pir == 1){
-		return "มีสิ่งมีชีวิตอยู่แถวนี้";
-	  }else{
-		return "ไม่มีสิ่งมีชีวิตอยู่แถวนี้";
-	  }
-  }
-  const checkfoodtray = () =>{
-	if(statusData.distance > 3){
-		return "อาหารหมดแล้ว";
-	}else{
-		return "อาหารยังไม่หมด";
+	const [statusData, setStatusData] = useState({});
+	const [servo, updateServo] = useState("");
+
+	useEffect(() => {
+		const load = async () => {
+			try {
+				const response = await axios.get("http://192.168.43.113:3001/status");
+				const data = response.data;
+				console.log(data.rows[0]);
+				setStatusData(data.rows[0]);
+				updateServo(data.v); // เรียกใช้ฟังก์ชันเพื่ออัปเดตค่า Servo
+			} catch (error) {
+				console.error("Error fetching data:", error);
+			}
+		};
+		const interval = setInterval(() => {
+			load();
+		}, 2000);
+		return () => clearInterval(interval);
+	}, [setStatusData, updateServo]);
+
+	const checkpir = () => {
+		if (statusData.pir == 1) {
+			return "มีสิ่งมีชีวิตอยู่แถวนี้";
+		}
+		else {
+			return "ไม่มีสิ่งมีชีวิตอยู่แถวนี้";
+		}
 	}
-  }
-  const checkfoodstork = () => {
-	console.log(statusData)
-	if(servo == 0 ){
-		if(statusData.distance > 3){
-			return "อาหารในสต๊อกหมด"
-		
-	}else{
-		return "อาหารในสต๊อกยังอยู่"
+	const checkfoodtray = () => {
+		if (statusData.distance > 3) {
+			return "อาหารหมดแล้ว";
+		} else {
+			return "อาหารยังไม่หมด";
+		}
 	}
-}
-  }
-  
+	const checkservoenable = () => {
+		console.log( )
+		if (statusData.servoauto == 0) {
+			return "กำลังให้อาหาร";
+		} else {
+			return "พักการให้อาหาร";
+		}
+	}
+
 	return (
 		<View style={styles.BG}>
 			<View style={styles.bg_circleTem}>
@@ -67,11 +65,11 @@ function Status_screen() {
 				<View style={styles.box_textend}>
 					<View style={styles.circle_out}>
 						<View style={styles.circle_in}>
-							<Text style={styles.h1}>อาหาร</Text>
+							<Text style={styles.h1}>สเตตัสที่ให้อาหาร</Text>
 						</View>
 					</View>
 					<View style={styles.bg_Text}>
-						<Text style={styles.h2}>{checkfoodstork()}</Text>
+						<Text style={styles.h2}>{checkservoenable()}</Text>
 					</View>
 				</View>
 			</View>

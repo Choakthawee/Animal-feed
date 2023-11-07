@@ -34,7 +34,7 @@ app.get('/status', (req, res) => {
       return;
     } else {
       if (rows.length > 0) { // ตรวจสอบว่ามีข้อมูลที่ถูกดึงมาหรือไม่
-        console.log(rows);
+        // console.log(rows);
         const dataToSend = { rows: rows, v: servoValue };
         res.status(200).json(dataToSend);
       } else {
@@ -45,9 +45,28 @@ app.get('/status', (req, res) => {
   
 });
 
+app.post("/date_time", (req, res) => {
+  servoType = req.body.type;
+  servoValue = req.body.value;
+
+  const currentDate = new Date().toISOString().slice(0, 10);
+  const currentTime = new Date().toTimeString().slice(0, 8);
+
+  connection.query('INSERT INTO date_time (date, time) VALUES (?, ?)', [currentDate, currentTime], (err, rows) => {
+    if (err) {
+      console.error('ไม่สามารถเพิ่มข้อมูล: ' + err);
+      res.status(500).send('มีปัญหาในการเพิ่มข้อมูล');
+      return;
+    }
+    res.json({
+      "date": currentDate,
+      "time": currentTime
+    });
+  });
+});
+
 app.post("/distance", (req, res) => {
   let valuedistance = req.body.value;
-  console.log(valuedistance)
   connection.query('UPDATE status SET distance = ? WHERE id= 1',[valuedistance], (err, rows) => {
     if (err) {
       console.error('ไม่สามารถดึงข้อมูล: ' + err);
@@ -60,7 +79,6 @@ app.post("/distance", (req, res) => {
 
 app.post("/tempereture", (req, res) => {
   let valuetem = req.body.value;
-  console.log(valuetem)
   connection.query('UPDATE status SET temperature = ? WHERE id= 1',[valuetem], (err, rows) => {
     if (err) {
       console.error('ไม่สามารถดึงข้อมูล: ' + err);
@@ -70,9 +88,9 @@ app.post("/tempereture", (req, res) => {
     res.status(200).json({"msg":"susess","update":rows});
   });
 });
+
 app.post("/pir", (req, res) => {
   let valuepir = req.body.value;
-  console.log(valuepir)
   connection.query('UPDATE status SET pir = ? WHERE id= 1',[valuepir], (err, rows) => {
     if (err) {
       console.error('ไม่สามารถดึงข้อมูล: ' + err);
@@ -96,3 +114,17 @@ app.post("/setmodeservo", (req, res) => {
 app.get("/checkservo", (req, res) => {
   res.status(200).send(servoType.toString()+servoValue.toString())
 });
+
+app.post("/servoauto", (req, res) => {
+  let valueservoauto = req.body.value;
+  console.log(valueservoauto)
+  connection.query('UPDATE status SET servoauto = ? WHERE id= 1',[valueservoauto], (err, rows) => {
+    if (err) {
+      console.error('ไม่สามารถดึงข้อมูล: ' + err);
+      res.status(500).send('มีปัญหาในการดึงข้อมูล');
+      return;
+    }
+    res.status(200).json({"msg":"susess","update":rows});
+  });
+});
+
