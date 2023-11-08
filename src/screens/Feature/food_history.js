@@ -20,7 +20,7 @@ function FoodHistory() {
 
 	useEffect(() => {
 		fetchData();
-	}, []); // Fetch data on initial component load
+	}, []); 
 
 	const handleRefresh = () => {
 		fetchData();
