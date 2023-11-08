@@ -8,12 +8,23 @@ import {
 	StyleSheet,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function TimeSet() {
 	const [selectedTime, setSelectedTime] = useState(new Date());
 	const [showPicker, setShowPicker] = useState(false);
 	const [savedTimes, setSavedTimes] = useState([]);
 
+	const storeData = async () => {
+		try {
+			await AsyncStorage.setItem('timeset', JSON.stringify(savedTimes));
+			console.log(savedTimes);
+		} catch (error) {
+			// จัดการ error ที่เกิดขึ้น
+		}
+	};
+	storeData();
+	
 	const handleTimeChange = (event, selected) => {
 		if (selected) {
 			setSelectedTime(selected);
@@ -26,7 +37,8 @@ function TimeSet() {
 	};
 
 	const saveTime = () => {
-		setSavedTimes([...savedTimes, selectedTime]);
+		const timeString = `${selectedTime.getHours()}:${selectedTime.getMinutes()}:${selectedTime.getSeconds()}`;
+		setSavedTimes([...savedTimes, timeString]);
 	};
 
 	const deleteTime = (index) => {
@@ -63,14 +75,12 @@ function TimeSet() {
 				keyExtractor={(item, index) => index.toString()}
 				renderItem={({ item, index }) => (
 					<View style={styles.listItem}>
-						<Text>{`Saved Time ${
-							index + 1
-						}: ${item.toLocaleTimeString()}`}</Text>
-						<Button
-							title="Delete"
-							color="red"
-							onPress={() => deleteTime(index)}
-						/>
+					<Text>{`Saved Time ${index + 1}: ${item}`}</Text>
+					<Button
+						title="Delete"
+						color="red"
+						onPress={() => deleteTime(index)}
+					/>
 					</View>
 				)}
 			/>

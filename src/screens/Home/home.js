@@ -2,33 +2,74 @@ import React, { useEffect, useState } from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 function Home_screen() {
 	const animation = useSharedValue(0);
 	const [isOffText, setIsOffText] = useState('OFF');
 	const [setModeText, setSetModeText] = useState('Manual');
 	const [isOff, setIsOff] = useState(true);
 	const [servo, setServo] = useState('OFF');
-	const [mode,setMode] = useState(0);
-	const animatedStyle = 	useAnimatedStyle(() => {
+	const [mode, setMode] = useState(0);
+	const [modetime, setModeTime] = useState(1);
+
+
+	useEffect(() => {
+		const retrieveData = async () => {
+			try {
+				const currentTime = new Date().toLocaleTimeString().split(':').slice(0, 2).join(':').toString();
+				const storedTimes = await AsyncStorage.getItem('timeset');
+
+				if (storedTimes !== null) {
+					const times = JSON.parse(storedTimes);
+					times.forEach(time => {
+						const timeArray = time.split(':');
+						const formattedHours = timeArray[0].padStart(2, '0');
+						const formattedMinutes = timeArray[1].padStart(2, '0');
+						const stringifiedTimes = `${formattedHours}:${formattedMinutes}`;
+
+						console.log('stringifiedTimes:', stringifiedTimes);
+						console.log('currentTime:', currentTime);
+
+						if (currentTime === stringifiedTimes) {
+							
+							console.log('ตรงแล้ว');
+						}
+						else {
+							
+							console.log('เวลาไม่ตรง');
+						}
+					});
+				} else {
+					console.log('Stored time is null or undefined.');
+				}
+			} catch (error) {
+				// จัดการ error ที่เกิดขึ้น
+			}
+		};
+
+		retrieveData();
+	})
+	const animatedStyle = useAnimatedStyle(() => {
 		return {
 			transform: [{ translateX: animation.value }],
 		};
 	});
 
 	const load = () => {
-		axios.post("http://192.168.43.113:3001/setmodeservo",`type=${mode}&value=${servo === "OFF"?"1":"0"}`)
+		axios.post("http://192.168.43.113:3001/setmodeservo", `type=${mode}&value=${servo === "OFF" ? "1" : "0"}`)
 			.then(re => {
-				console.log(re.data)
+				// console.log(re.data)
 			})
 	}
-
+	
 	const animationSwitch = () => {
 		if (isOff) {
 			animation.value = withTiming(144, { duration: 500 });
 			setIsOff(false);
 			setIsOffText('ON');
 			setMode(1);
-			console.log(mode)
+
 			setSetModeText('Auto');
 			setServo('Auto');
 		} else {
@@ -36,7 +77,7 @@ function Home_screen() {
 			setIsOff(true);
 			setIsOffText('OFF');
 			setMode(0);
-			console.log(mode)
+
 			setSetModeText('Manual');
 			setServo('OFF');
 		}
@@ -52,7 +93,7 @@ function Home_screen() {
 
 	useEffect(() => {
 		load();
-	  }, [servo, mode]);
+	}, [servo, mode]);
 
 	return (
 		<View style={styles.container}>
@@ -62,7 +103,7 @@ function Home_screen() {
 			<View style={styles.servoContainer}>
 				<TouchableOpacity
 					style={[styles.servoButton, styles.shadowPlatform, { backgroundColor: servo === 'ON' ? '#33b249' : servo === 'OFF' ? 'red' : '#263238', }]}
-					onPress={()=>{toggleServo();}}
+					onPress={() => { toggleServo(); }}
 					disabled={setModeText === 'Auto'}
 				>
 					<Text style={[styles.servoText, styles.shadowSetting]}>
@@ -74,7 +115,7 @@ function Home_screen() {
 				<Text style={[styles.textMode, styles.textModeSetting]}>Mode: {setModeText}</Text>
 				<TouchableOpacity
 					style={[styles.modeButton, styles.shadowPlatform, { backgroundColor: '#263238' }]}
-					onPress={()=>{animationSwitch();}}
+					onPress={() => { animationSwitch(); }}
 				>
 					<Animated.View style={[styles.animatedMode, animatedStyle]}>
 						<Text style={[{ fontSize: 24, color: 'black' }, styles.textModeSetting]}>{isOffText}</Text>

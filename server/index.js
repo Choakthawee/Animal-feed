@@ -128,9 +128,11 @@ app.post("/setmodeservo", (req, res) => {
   })
 });
 
+
 app.get("/checkservo", (req, res) => {
   res.status(200).send(servoType.toString()+servoValue.toString())
 });
+
 
 app.post("/servoauto", (req, res) => {
   let valueservoauto = req.body.value;

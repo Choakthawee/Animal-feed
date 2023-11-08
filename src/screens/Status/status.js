@@ -10,7 +10,6 @@ function Status_screen() {
 			try {
 				const response = await axios.get("http://192.168.43.113:3001/status");
 				const data = response.data;
-				console.log(data.rows[0]);
 				setStatusData(data.rows[0]);
 				updateServo(data.v); // เรียกใช้ฟังก์ชันเพื่ออัปเดตค่า Servo
 			} catch (error) {
@@ -39,7 +38,6 @@ function Status_screen() {
 		}
 	}
 	const checkservoenable = () => {
-		console.log( )
 		if (statusData.servoauto == 0) {
 			return "กำลังให้อาหาร";
 		} else {

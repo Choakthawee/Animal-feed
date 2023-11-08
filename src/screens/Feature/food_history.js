@@ -11,7 +11,7 @@ function FoodHistory() {
 		try {
 			const response = await axios.get("http://192.168.43.113:3001/date_time");
 			const data = response.data;
-			console.log(data);
+			
 			setTableData(data);
 		} catch (error) {
 			
