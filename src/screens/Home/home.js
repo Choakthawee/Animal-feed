@@ -11,45 +11,97 @@ function Home_screen() {
 	const [isOff, setIsOff] = useState(true);
 	const [servo, setServo] = useState('OFF');
 	const [mode, setMode] = useState(0);
-	const [modetime, setModeTime] = useState(1);
+	const [modetime, setModeTime] = useState("1");
+	const [settime, setSetTime] = useState("1");
 
+	// useEffect(() => {
+	// 	const retrieveData = async () => {
+	// 		try {
+	// 			const currentTime = new Date().toLocaleTimeString().toString();
+	// 			const storedTimes = await AsyncStorage.getItem('timeset');
 
+	// 			if (storedTimes !== null) {
+	// 				const times = JSON.parse(storedTimes);
+	// 				times.forEach(time => {
+	// 					const timeArray = time.split(':');
+	// 					const formattedHours = timeArray[0].padStart(2, '0');
+	// 					const formattedMinutes = timeArray[1].padStart(2, '0');
+	// 					const formattedSeconds = timeArray[2].padStart(2,'0');
+	// 					const stringifiedTimes = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+
+	// 					// console.log('settime:', stringifiedTimes);
+	// 					// console.log('currentTime:', currentTime);
+
+	// 					if (currentTime == stringifiedTimes) {
+	// 						setModeTime(0);
+	// 						console.log("ทำ")
+	// 					}else{
+	// 						setModeTime(1);
+	// 						console.log("ไม่ทำ")
+	// 					}
+	// 					setservo();
+	// 				});
+	// 			} else {
+	// 				console.log('Stored time is null or undefined.');
+	// 			}
+	// 		} catch (error) {
+	// 		}
+	// 	};
+	// 	retrieveData();
+	// 	const interval = setInterval(retrieveData, 10000); // เรียกใช้ retrieveData() ทุก 3 วินาที
+
+    // 	return () => clearInterval(interval);
+	// },[setservo]);
+	
 	useEffect(() => {
-		const retrieveData = async () => {
-			try {
-				const currentTime = new Date().toLocaleTimeString().split(':').slice(0, 2).join(':').toString();
-				const storedTimes = await AsyncStorage.getItem('timeset');
-
-				if (storedTimes !== null) {
-					const times = JSON.parse(storedTimes);
-					times.forEach(time => {
-						const timeArray = time.split(':');
-						const formattedHours = timeArray[0].padStart(2, '0');
-						const formattedMinutes = timeArray[1].padStart(2, '0');
-						const stringifiedTimes = `${formattedHours}:${formattedMinutes}`;
-
-						console.log('stringifiedTimes:', stringifiedTimes);
-						console.log('currentTime:', currentTime);
-
-						if (currentTime === stringifiedTimes) {
+		const interval = setInterval(() => {
+			const retrieveData = async () => {
+				try {
+					const currentTime = new Date().toLocaleTimeString().toString();
+					const storedTimes = await AsyncStorage.getItem('timeset');
+	
+					if (storedTimes !== null) {
+						const times = JSON.parse(storedTimes);
+						let timeArray;
+						let formattedHours;
+						let formattedMinutes;
+						let formattedSeconds;
+						let stringifiedTimes;
+						times.forEach(time => {
+							timeArray = time.split(':');
+							formattedHours = timeArray[0].padStart(2, '0');
+							formattedMinutes = timeArray[1].padStart(2, '0');
+							formattedSeconds = timeArray[2].padStart(2,'0');
+							stringifiedTimes = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+	
+							// console.log('settime:', stringifiedTimes);
+							// console.log('currentTime:', currentTime);	
+						});
+						if (currentTime == stringifiedTimes) {
+							axios.post("http://192.168.43.113:3001/setmodetime", `timemode=0`)
+							.then(re => {
+							})
+							console.log("ทำ")
 							
-							console.log('ตรงแล้ว');
-						}
-						else {
+						}else{
+							setModeTime(1);
+							console.log("ไม่ทำ")
 							
-							console.log('เวลาไม่ตรง');
 						}
-					});
-				} else {
-					console.log('Stored time is null or undefined.');
+						setservo();
+					} else {
+						console.log('Stored time is null or undefined.');
+					}
+				} catch (error) {
 				}
-			} catch (error) {
-				// จัดการ error ที่เกิดขึ้น
-			}
-		};
-
-		retrieveData();
-	})
+			};
+			retrieveData();
+		  
+		}, 1000); 
+	
+		
+		return () => clearInterval(interval); 
+	  }, [setservo]);  
 	const animatedStyle = useAnimatedStyle(() => {
 		return {
 			transform: [{ translateX: animation.value }],
@@ -60,6 +112,12 @@ function Home_screen() {
 		axios.post("http://192.168.43.113:3001/setmodeservo", `type=${mode}&value=${servo === "OFF" ? "1" : "0"}`)
 			.then(re => {
 				// console.log(re.data)
+			})
+	}
+	const setservo = () => {
+		axios.post("http://192.168.43.113:3001/setmodetime", `timemode=${modetime}`)
+			.then(re => {
+				//console.log(re.data)
 			})
 	}
 	

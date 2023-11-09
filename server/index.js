@@ -9,6 +9,9 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true })); //ตอน post ต้องใช้ email=ASASD&password=asdsad ไม่ใช้ที่ ต้องค่าเป็น appcation/json ที่ต้องส่ง  post เป็น json
 let servoType = 0
 let servoValue = 0
+let timeValue = 0
+let timeSet = 0
+
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
@@ -68,7 +71,6 @@ app.get('/date_time', (req, res) => {
 const report_time = () => {
   const currentDate = moment().tz('Asia/Bangkok').format('YYYY-MM-DD');
   const currentTime = moment().tz('Asia/Bangkok').format('HH:mm:ss');
-  console.log( currentDate.toString() )
   connection.query('INSERT INTO date_time (date, time) VALUES (?, ?)', [currentDate, currentTime], (err, rows) => {
     if (err) {
       console.error('ไม่สามารถเพิ่มข้อมูล: ' + err);
@@ -128,6 +130,24 @@ app.post("/setmodeservo", (req, res) => {
   })
 });
 
+app.post("/setmodetime", (req, res) => {
+  timeValue = req.body.timemode;
+  if (timeValue == 1){
+    timeSet = "1";
+    res.json({
+      "timeset":timeSet,
+    })
+  } else if (timeValue == 0){
+    timeSet = "0";
+    res.json({
+      "timeset":timeSet,
+    })
+  }
+});
+
+app.get("/checktimemode", (req, res) => {
+  res.status(200).send(timeSet.toString())
+});
 
 app.get("/checkservo", (req, res) => {
   res.status(200).send(servoType.toString()+servoValue.toString())
@@ -136,7 +156,6 @@ app.get("/checkservo", (req, res) => {
 
 app.post("/servoauto", (req, res) => {
   let valueservoauto = req.body.value;
-  console.log(valueservoauto)
   connection.query('UPDATE status SET servoauto = ? WHERE id= 1',[valueservoauto], (err, rows) => {
     if (err) {
       console.error('ไม่สามารถดึงข้อมูล: ' + err);
