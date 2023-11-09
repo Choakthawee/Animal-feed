@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true })); //ตอน post ต้อง�
 let servoType = 0
 let servoValue = 0
 let timeValue = 0
-let timeSet = 0
+let timeSet 
 
 const connection = mysql.createConnection({
   host: 'localhost',
@@ -132,17 +132,18 @@ app.post("/setmodeservo", (req, res) => {
 
 app.post("/setmodetime", (req, res) => {
   timeValue = req.body.timemode;
-  if (timeValue == 1){
+  if (timeValue == "1"){
     timeSet = "1";
     res.json({
       "timeset":timeSet,
     })
-  } else if (timeValue == 0){
+  } else if (timeValue == "0"){
     timeSet = "0";
     res.json({
       "timeset":timeSet,
     })
   }
+  console.log(timeSet);
 });
 
 app.get("/checktimemode", (req, res) => {
